@@ -11,14 +11,20 @@ class MoviesController < ApplicationController
   end
 
   def index
-    # @movies = Movie.all
-    @movies= case params[:sortOrder]
-    when "title", "release_date"
-        instance_variable_set("@klass_#{params["sortOrder"]}", "hilite")
-        Movie.order(params["sortOrder"])
-    else
-        Movie.all
+    @all_ratings = Movie.get_rating_list
+    @ratings = @all_ratings
+    if params.key?("ratings")
+      @ratings = params["ratings"].keys
     end
+    @movies = Movie.with_ratings(@ratings)
+    @movies= case params[:sortOrder]
+      when "title", "release_date"
+        instance_variable_set("@klass_#{params["sortOrder"]}", "hilite")
+        @movies.order(params["sortOrder"])
+    else
+      @movies
+    end
+    
   end
   
   def new
