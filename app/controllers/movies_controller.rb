@@ -11,9 +11,16 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    # @movies = Movie.all
+    @movies= case params[:sortOrder]
+    when "title", "release_date"
+        instance_variable_set("@klass_#{params["sortOrder"]}", "hilite")
+        Movie.order(params["sortOrder"])
+    else
+        Movie.all
+    end
   end
-
+  
   def new
     # default: render 'new' template
   end
