@@ -13,7 +13,6 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.get_rating_list
     redirect = false
-    #session.clear
     if params.key?("ratings")
       @ratings = params["ratings"].keys
       session["ratings"] = params["ratings"]
@@ -39,7 +38,6 @@ class MoviesController < ApplicationController
     puts params
     
     if redirect
-      #redirect_to root_path(redirect_params)
       redirect_to movies_path(params), :method => :get
     end
     
